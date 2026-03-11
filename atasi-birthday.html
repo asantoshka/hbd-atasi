@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Atasi 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --rose: #e8647a;
+    --blush: #f7c5cc;
+    --cream: #fff8f3;
+    --gold: #d4a853;
+    --deep: #2a1a2e;
+    --muted: #7a6a78;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--deep);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ───────── PAGES ───────── */
+  .page { display: none; min-height: 100vh; position: relative; }
+  .page.active { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+  /* ───────── PAGE 1 — LOCK ───────── */
+  #page-lock {
+    background: var(--deep);
+    overflow: hidden;
+  }
+
+  .lock-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 40%, #4a1a3a 0%, #1a0a2e 60%, #0d0618 100%);
+  }
+
+  .stars {
+    position: absolute; inset: 0; overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--d, 3s) ease-in-out infinite;
+    opacity: 0;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: var(--op, 0.8); transform: scale(1); }
+  }
+
+  .lock-card {
+    position: relative; z-index: 2;
+    text-align: center;
+    padding: 3rem 2.5rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 24px;
+    backdrop-filter: blur(12px);
+    max-width: 420px;
+    width: 90%;
+    animation: fadeUp 0.8s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .lock-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    display: block;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+
+  .lock-card h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+  .lock-card p {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+
+  .pin-input {
+    display: flex; gap: 12px; justify-content: center; margin-bottom: 1.5rem;
+  }
+  .pin-input input {
+    width: 52px; height: 60px;
+    text-align: center;
+    font-size: 1.5rem; font-weight: 700;
+    background: rgba(255,255,255,0.08);
+    border: 2px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    color: white;
+    outline: none;
+    transition: border-color 0.2s;
+    caret-color: var(--rose);
+  }
+  .pin-input input:focus { border-color: var(--rose); }
+  .pin-input input.filled { border-color: var(--gold); }
+
+  .hint { color: rgba(255,255,255,0.35); font-size: 0.8rem; }
+
+  .shake { animation: shake 0.4s ease; }
+  @keyframes shake {
+    0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)}
+  }
+
+  .error-msg {
+    color: var(--rose);
+    font-size: 0.85rem;
+    margin-top: 0.75rem;
+    min-height: 1.2em;
+  }
+
+  /* ───────── PAGE 2 — QUIZ ───────── */
+  #page-quiz { padding: 0; }
+
+  .quiz-bg {
+    position: absolute; inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: opacity 0.6s ease;
+    filter: brightness(0.35) saturate(0.6);
+  }
+
+  /* Placeholder gradient backgrounds (replace with her actual photos) */
+  .quiz-bg.q1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); filter: brightness(0.4); }
+  .quiz-bg.q2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); filter: brightness(0.4); }
+  .quiz-bg.q3 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); filter: brightness(0.4); }
+  .quiz-bg.q4 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); filter: brightness(0.4); }
+  .quiz-bg.q5 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); filter: brightness(0.35); }
+  .quiz-bg.q6 { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); filter: brightness(0.35); }
+  .quiz-bg.q7 { background: linear-gradient(135deg, #f77062 0%, #fe5196 100%); filter: brightness(0.35); }
+
+  .quiz-container {
+    position: relative; z-index: 2;
+    max-width: 600px; width: 90%;
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  .quiz-progress {
+    display: flex; gap: 8px; margin-bottom: 2.5rem;
+  }
+  .progress-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transition: background 0.3s;
+  }
+  .progress-dot.done { background: var(--gold); }
+  .progress-dot.active { background: white; width: 24px; border-radius: 4px; }
+
+  .question-num {
+    color: var(--gold);
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+  }
+
+  .question-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    color: white;
+    line-height: 1.4;
+    margin-bottom: 2.5rem;
+  }
+
+  .options { display: flex; flex-direction: column; gap: 12px; }
+
+  .option-btn {
+    background: rgba(255,255,255,0.08);
+    border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 14px;
+    padding: 1rem 1.4rem;
+    color: white;
+    font-size: 1rem;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .option-btn:hover {
+    background: rgba(255,255,255,0.14);
+    border-color: rgba(255,255,255,0.35);
+    transform: translateX(6px);
+  }
+  .option-btn.selected {
+    background: rgba(232, 100, 122, 0.25);
+    border-color: var(--rose);
+  }
+
+  .feedback-box {
+    margin-top: 1.5rem;
+    padding: 1rem 1.4rem;
+    background: rgba(212, 168, 83, 0.15);
+    border: 1px solid rgba(212, 168, 83, 0.3);
+    border-radius: 12px;
+    color: #f0d890;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    display: none;
+    animation: fadeUp 0.3s ease;
+  }
+  .feedback-box.show { display: block; }
+
+  .next-btn {
+    margin-top: 1.5rem;
+    padding: 0.9rem 2.5rem;
+    background: var(--rose);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-size: 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    display: none;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .next-btn:hover { transform: scale(1.04); background: #d4566b; }
+  .next-btn.show { display: inline-block; animation: fadeUp 0.3s ease; }
+
+  /* ───────── PAGE 3 — WISH ───────── */
+  #page-wish {
+    background: var(--deep);
+    overflow: hidden;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .wish-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 80%, #4a1535 0%, #1a0a2e 50%, #0d0618 100%);
+  }
+
+  /* Balloons */
+  .balloons { position: fixed; inset: 0; pointer-events: none; z-index: 5; }
+  .balloon {
+    position: absolute;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    pointer-events: all;
+    cursor: pointer;
+    will-change: transform;
+  }
+  .balloon::after {
+    content: '';
+    position: absolute;
+    bottom: -28px; left: 50%;
+    transform: translateX(-50%);
+    width: 1px; height: 28px;
+    background: rgba(255,255,255,0.35);
+  }
+
+  /* Confetti */
+  .confetti-piece {
+    position: absolute;
+    width: 8px; height: 8px;
+    opacity: 0;
+    animation: confettiFall var(--dur,4s) ease-in var(--delay,0s) infinite;
+  }
+  @keyframes confettiFall {
+    0% { opacity: 1; transform: translateY(-20px) rotate(0deg); }
+    100% { opacity: 0; transform: translateY(100vh) rotate(720deg); }
+  }
+
+  .wish-content {
+    position: relative; z-index: 2;
+    max-width: 560px;
+  }
+
+  .cake-wrap {
+    font-size: 5rem;
+    margin-bottom: 1rem;
+    display: block;
+    animation: cakeBounce 0.6s ease 0.4s both;
+    cursor: pointer;
+    user-select: none;
+  }
+  @keyframes cakeBounce {
+    0% { opacity: 0; transform: scale(0.3) rotate(-15deg); }
+    60% { transform: scale(1.15) rotate(5deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  }
+
+  .wish-content h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 6vw, 3.5rem);
+    color: white;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+    animation: fadeUp 0.7s ease 0.7s both;
+  }
+  .wish-content h1 span { color: var(--gold); font-style: italic; }
+
+  .wish-subtitle {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.7s ease 0.9s both;
+  }
+
+  .wish-message {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.9;
+    font-style: italic;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.7s ease 1.1s both;
+  }
+
+  .music-note {
+    position: absolute;
+    font-size: 1.2rem;
+    animation: musicFloat var(--dur, 3s) ease-in-out var(--delay, 0s) infinite;
+    opacity: 0;
+    pointer-events: none;
+  }
+  @keyframes musicFloat {
+    0% { opacity: 0; transform: translate(0,0) rotate(0deg); }
+    20% { opacity: 0.7; }
+    100% { opacity: 0; transform: translate(var(--tx, 30px), -80px) rotate(20deg); }
+  }
+
+  .candle-blown { animation: blown 0.3s ease forwards; }
+  @keyframes blown { to { filter: grayscale(1) brightness(0.6); } }
+
+  .birthday-tag {
+    display: inline-block;
+    padding: 0.4rem 1.2rem;
+    border: 1px solid var(--gold);
+    border-radius: 50px;
+    color: var(--gold);
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    animation: fadeUp 0.7s ease 1.3s both;
+  }
+
+  /* ───────── TIMER PAGE ───────── */
+  #page-timer {
+    background: var(--deep);
+    overflow: hidden;
+    text-align: center;
+    padding: 2rem;
+  }
+  .timer-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 60% 30%, #3a1040 0%, #1a0a2e 55%, #0d0618 100%);
+  }
+  .timer-card {
+    position: relative; z-index: 2;
+    max-width: 500px; width: 90%;
+    animation: fadeUp 0.8s ease forwards;
+  }
+  .timer-emoji {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 1rem;
+    animation: wiggle 1.5s ease-in-out infinite;
+  }
+  @keyframes wiggle {
+    0%,100%{transform:rotate(-8deg)} 50%{transform:rotate(8deg)}
+  }
+  .timer-card h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    color: white;
+    margin-bottom: 0.5rem;
+  }
+  .timer-card h1 span { color: var(--gold); font-style: italic; }
+  .timer-tagline {
+    color: rgba(255,255,255,0.45);
+    font-size: 0.9rem;
+    margin-bottom: 2.5rem;
+    font-style: italic;
+  }
+  .countdown-grid {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+  .countdown-unit {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 1rem 1.2rem;
+    min-width: 72px;
+  }
+  .countdown-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    color: var(--gold);
+    display: block;
+    line-height: 1;
+    font-weight: 700;
+  }
+  .countdown-label {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 0.4rem;
+    display: block;
+  }
+  .fun-messages {
+    color: rgba(255,255,255,0.55);
+    font-size: 0.9rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    min-height: 2em;
+    font-style: italic;
+    transition: opacity 0.5s;
+  }
+  .timer-note {
+    color: rgba(255,255,255,0.2);
+    font-size: 0.75rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════ PAGE 0: TIMER ══════ -->
+<div class="page" id="page-timer">
+  <div class="timer-bg"></div>
+  <div class="stars" id="stars-timer"></div>
+  <div class="timer-card">
+    <span class="timer-emoji">⏳</span>
+    <h1>Something special is<br><span>almost here...</span></h1>
+    <p class="timer-tagline">Atasi's big day is loading. Please hold. 🎂</p>
+    <div class="countdown-grid">
+      <div class="countdown-unit"><span class="countdown-num" id="cd-days">00</span><span class="countdown-label">Days</span></div>
+      <div class="countdown-unit"><span class="countdown-num" id="cd-hours">00</span><span class="countdown-label">Hours</span></div>
+      <div class="countdown-unit"><span class="countdown-num" id="cd-mins">00</span><span class="countdown-label">Minutes</span></div>
+      <div class="countdown-unit"><span class="countdown-num" id="cd-secs">00</span><span class="countdown-label">Seconds</span></div>
+    </div>
+    <p class="fun-messages" id="fun-msg">She's still peacefully unaware this exists. 🤫</p>
+    <p class="timer-note">Come back on 13th March at midnight 🌙</p>
+    <button onclick="showPage('page-lock')" style="margin-top:1.5rem;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.35);font-size:0.75rem;padding:0.4rem 1.2rem;border-radius:50px;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:0.08em;" id="skip-btn">skip (dev only)</button>
+  </div>
+</div>
+
+<!-- ══════ PAGE 1: LOCK ══════ -->
+<div class="page active" id="page-lock">
+  <div class="lock-bg"></div>
+  <div class="stars" id="stars"></div>
+
+  <div class="lock-card" id="lock-card">
+    <span class="lock-icon">🔒</span>
+    <h1>Something awaits...</h1>
+    <p>you should know this one 😏</p>
+
+    <div class="pin-input" id="pin-input">
+      <input type="number" maxlength="1" min="0" max="9" id="p0" placeholder="·">
+      <input type="number" maxlength="1" min="0" max="9" id="p1" placeholder="·">
+      <input type="number" maxlength="1" min="0" max="9" id="p2" placeholder="·">
+      <input type="number" maxlength="1" min="0" max="9" id="p3" placeholder="·">
+    </div>
+
+    <p class="hint">🗓️ hint: the day someone special arrived</p>
+    <p class="error-msg" id="error-msg"></p>
+  </div>
+</div>
+
+<!-- ══════ PAGE 2: QUIZ ══════ -->
+<div class="page" id="page-quiz">
+  <div class="quiz-bg q1" id="quiz-bg"></div>
+  <div class="quiz-container">
+    <div class="quiz-progress" id="quiz-progress"></div>
+    <div class="question-num" id="question-num">Question 1 of 4</div>
+    <div class="question-text" id="question-text"></div>
+    <div class="options" id="options"></div>
+    <div class="feedback-box" id="feedback-box"></div>
+    <button class="next-btn" id="next-btn">Next →</button>
+  </div>
+</div>
+
+<!-- ══════ PAGE 3: WISH ══════ -->
+<div class="page" id="page-wish">
+  <div class="wish-bg"></div>
+  <div class="balloons" id="balloons"></div>
+  <div class="confetti-container" id="confetti"></div>
+
+  <!-- Score bar fixed at top -->
+  <div id="balloon-game" style="
+    position:fixed;top:0;left:0;right:0;
+    z-index:100;
+    display:none;
+    flex-direction:column;align-items:center;
+    padding:0.6rem 1rem 0.5rem;
+    background:rgba(15,5,25,0.75);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(255,255,255,0.07);
+  ">
+    <div style="display:flex;align-items:center;gap:0.8rem;">
+      <span style="font-size:0.75rem;color:rgba(255,255,255,0.35);letter-spacing:0.12em;text-transform:uppercase;">🎈 popped</span>
+      <span id="score-display" style="font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--gold);line-height:1;">0</span>
+      <span id="total-display" style="font-size:0.75rem;color:rgba(255,255,255,0.25);">/ 18</span>
+    </div>
+    <div id="score-msg" style="color:rgba(255,255,255,0.45);font-size:0.78rem;font-style:italic;min-height:1.2em;margin-top:0.15rem;"></div>
+  </div>
+
+  <div class="wish-content">
+    <span class="cake-wrap" id="cake" title="Click to blow!">🎂</span>
+    <h1>Happy Birthday,<br><span>Atasi!</span></h1>
+    <p class="wish-subtitle">13th March · A wonderful human</p>
+    <p class="wish-message">
+      May this year bring you more joy than a quiet classroom on a Friday,<br>
+      and absolutely zero kitchen injuries. 🔥<br><br>
+      You're cute, you're pretty, and you deserve every good thing<br>
+      this world has to offer — and then some.<br><br>
+      Some people just have this thing about them —<br>
+      the kind you notice without meaning to.<br>
+      Here's to you, Atasi — genuinely one of a kind.<br>
+      The world's a little more interesting with you in it. 🥂
+    </p>
+    <div class="birthday-tag">🎉 wishing you the best year yet</div>
+  </div>
+
+</div>
+
+<script>
+// ── DEV FLAG — set to false before sending to Atasi ──
+const DEV_SKIP_TIMER = true;
+
+// ── BIRTHDAY CHECK — show timer if not yet 13th March midnight ──
+(function(){
+  const now = new Date();
+  const isBirthday = now.getMonth() === 2 && now.getDate() === 13;
+  if (!isBirthday && !DEV_SKIP_TIMER) {
+    document.getElementById('page-timer').classList.add('active');
+    document.getElementById('page-lock').classList.remove('active');
+    startTimer();
+    spawnTimerStars();
+  }
+})();
+
+function spawnTimerStars(){
+  const c = document.getElementById('stars-timer');
+  for(let i=0;i<120;i++){
+    const s = document.createElement('div');
+    s.className = 'star';
+    const sz = Math.random()*2.5+0.5;
+    s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${Math.random()*4+2}s;--op:${Math.random()*0.7+0.3};animation-delay:${Math.random()*5}s;`;
+    c.appendChild(s);
+  }
+}
+
+function startTimer(){
+  const funMsgs = [
+    "She's still peacefully unaware this exists. 🤫",
+    "Santosh is nervously refreshing this page. 😅",
+    "The cake is still theoretical at this point. 🎂",
+    "Her students have no idea their Ma'am is this celebrated. 🏫",
+    "The pan that burned her finger is also waiting. 🍳",
+    "Every second brings her closer to finding out. 👀",
+    "She's probably grading papers right now, unaware. 📝",
+    "Excitement level: trying to act casual. 😌",
+    "She deserves this so much. Just saying. 💛",
+    "Tick tock. The birthday queen approaches. 👑",
+  ];
+  let msgIdx = 0;
+  const msgEl = document.getElementById('fun-msg');
+
+  function rotateMsgs(){
+    msgEl.style.opacity = '0';
+    setTimeout(()=>{
+      msgIdx = (msgIdx + 1) % funMsgs.length;
+      msgEl.textContent = funMsgs[msgIdx];
+      msgEl.style.opacity = '1';
+    }, 500);
+  }
+  setInterval(rotateMsgs, 4000);
+
+  function tick(){
+    const now = new Date();
+    const target = new Date(now.getFullYear(), 2, 13, 0, 0, 0); // March 13 midnight
+    if(now > target) target.setFullYear(target.getFullYear() + 1);
+    const diff = target - now;
+
+    if(diff <= 0){
+      // It's time! Switch to lock page
+      showPage('page-lock');
+      return;
+    }
+
+    const days  = Math.floor(diff / (1000*60*60*24));
+    const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+    const mins  = Math.floor((diff % (1000*60*60)) / (1000*60));
+    const secs  = Math.floor((diff % (1000*60)) / 1000);
+
+    document.getElementById('cd-days').textContent  = String(days).padStart(2,'0');
+    document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
+    document.getElementById('cd-mins').textContent  = String(mins).padStart(2,'0');
+    document.getElementById('cd-secs').textContent  = String(secs).padStart(2,'0');
+
+    setTimeout(tick, 1000);
+  }
+  tick();
+}
+
+// ── STARS ──
+(function(){
+  const c = document.getElementById('stars');
+  for(let i=0;i<120;i++){
+    const s = document.createElement('div');
+    s.className = 'star';
+    const sz = Math.random()*2.5+0.5;
+    s.style.cssText = `
+      width:${sz}px;height:${sz}px;
+      left:${Math.random()*100}%;top:${Math.random()*100}%;
+      --d:${Math.random()*4+2}s;
+      --op:${Math.random()*0.7+0.3};
+      animation-delay:${Math.random()*5}s;
+    `;
+    c.appendChild(s);
+  }
+})();
+
+// ── PIN INPUT ──
+const pins = [0,1,2,3].map(i=>document.getElementById('p'+i));
+const CORRECT = ['1','3','0','3'];
+
+pins.forEach((pin,i) => {
+  pin.addEventListener('input', e => {
+    const v = e.target.value.slice(-1);
+    pin.value = v;
+    if(v) pin.classList.add('filled');
+    if(v && i<3) pins[i+1].focus();
+    if(pins.every(p=>p.value)) checkPin();
+  });
+  pin.addEventListener('keydown', e => {
+    if(e.key==='Backspace'&&!pin.value&&i>0) pins[i-1].focus();
+  });
+  // prevent multi-digit
+  pin.addEventListener('keypress', e => {
+    if(!/[0-9]/.test(e.key)) e.preventDefault();
+  });
+});
+
+function checkPin(){
+  const entered = pins.map(p=>p.value);
+  if(JSON.stringify(entered)===JSON.stringify(CORRECT)){
+    document.getElementById('lock-card').style.transform='scale(0.95)';
+    document.getElementById('lock-card').style.opacity='0.6';
+    setTimeout(()=>showPage('page-quiz'), 600);
+  } else {
+    const card = document.getElementById('lock-card');
+    card.classList.add('shake');
+    document.getElementById('error-msg').textContent = 'Nope! Try again 😄';
+    setTimeout(()=>{
+      card.classList.remove('shake');
+      pins.forEach(p=>{p.value='';p.classList.remove('filled');});
+      pins[0].focus();
+    }, 600);
+  }
+}
+
+// ── QUIZ ──
+const questions = [
+  {
+    bg: 'q1',
+    num: 'Question 1 of 6 — 👩‍🏫 Profession',
+    text: 'A student raises their hand and says "Ma\'am, I don\'t understand anything." It\'s 5 minutes before the bell. Your face does:',
+    options: [
+      { text: '😊 Lights up — teaching moment!', feedback: 'Absolutely not. No one\'s face does that at 5 minutes to bell. Not even yours. Beautiful fiction though. 😭' },
+      { text: '😐 The smile that doesn\'t reach the eyes', feedback: 'Ah yes. The "I am professionally obligated to care right now" expression. Perfected over many semesters. 🎭' },
+      { text: '🙂 A slow, deep breath and a forced nod', feedback: 'The nod of someone who has accepted their fate. Deeply relatable. Deeply concerning. 🫡' },
+      { text: '😶 Nothing. I have left my body entirely.', feedback: 'Correct. The soul exits the building approximately 3 minutes before the bell. Every time. 👻' }
+    ]
+  },
+  {
+    bg: 'q2',
+    num: 'Question 2 of 6 — 🔥 Cooking Chronicles',
+    text: 'You\'re cooking. Everything smells incredible. You reach over the pan confidently and then — it happens. Your finger meets hot oil. First thought?',
+    options: [
+      { text: '🤬 Words that would get me suspended from my own class', feedback: 'The kitchen has heard things the classroom never will. And honestly? Completely fair. 🔊' },
+      { text: '🧊 Cold water. Immediately. I\'m fine. I\'m totally fine.', feedback: 'Stoic. Strong. Absolutely still dying on the inside. A true performer. 🎬' },
+      { text: '📞 Call Santosh and ask what to do', feedback: 'Honestly the most unhinged and yet somehow wholesome response. He would absolutely panic too. 😅' },
+      { text: '📱 Google "is this bad" while still holding the spoon', feedback: 'One hand burned, one hand Googling, one eye on the curry. Peak human multitasking. 💪' }
+    ]
+  },
+  {
+    bg: 'q3',
+    num: 'Question 3 of 6 — 🔥 Cooking Chronicles',
+    text: 'After the burn incident, someone asks "how\'s the cooking going?" You say:',
+    options: [
+      { text: '😎 "Great! Just adding some character to the dish."', feedback: 'Unshakeable confidence. The finger is fine. The ego is intact. Respect. 💅' },
+      { text: '😅 "Good! Minor casualties but overall a success."', feedback: 'Minor casualties. Finger not included in the success metrics. Accurate summary. 📊' },
+      { text: '🙂 "It\'s going well!" — and show nothing', feedback: 'The same face you use when a student says they studied. Practiced. Flawless. 🎭' },
+      { text: '😶 "I don\'t want to talk about it."', feedback: 'Respect the boundary. The kitchen has trauma. We move on. 🚶' }
+    ]
+  },
+  {
+    bg: 'q5',
+    num: 'Question 5 of 7 — 🌟 You\'re the Best',
+    text: 'Your students secretly agree on something. What is it most likely to be?',
+    options: [
+      { text: '😌 "She\'s strict but actually we learn the most from her"', feedback: 'The highest compliment students give. They\'ll admit it publicly in about 10 years. 🏅' },
+      { text: '🤩 "She\'s genuinely the coolest teacher we have"', feedback: 'Also very likely true. Some teachers just have it. You have it. Undeniable. ✨' },
+      { text: '😂 "She roasts us but we love her for it"', feedback: 'The rare and powerful combo of feared + loved. Only the best teachers pull this off. 👑' },
+      { text: '🥹 "We hope she knows how much she matters"', feedback: 'This one\'s real. They probably don\'t say it. But they mean it. And so does everyone here. 💛' }
+    ]
+  },
+  {
+    bg: 'q6',
+    num: 'Question 5 of 6 — 🌟 You\'re the Best',
+    text: 'If someone had to describe you in one sentence, which lands closest to the truth?',
+    options: [
+      { text: '✨ "Effortlessly the most capable person in the room"', feedback: 'Accurate. And the frustrating part? She doesn\'t even try. She just IS. 💫' },
+      { text: '😄 "Funny, sharp, and somehow always right"', feedback: 'Three things. All true. No notes. No corrections. Just facts. 📋' },
+      { text: '💛 "The kind of person you\'re genuinely glad exists"', feedback: 'This is it. This is the one. Some people just make the world better by being in it. 🌍' },
+      { text: '🔥 "Dangerous in the kitchen, unstoppable everywhere else"', feedback: 'The most balanced and complete description of a human being ever written. We\'re done here. 🏆' }
+    ]
+  },
+  {
+    bg: 'q7',
+    num: 'Question 7 of 7 — 🕵️ About the Mystery Person',
+    text: 'Someone named Santosh made you this site. You met him on an aisle. He is probably:',
+    options: [
+      { text: '🛒 A guy who noticed you between the snacks and the dairy section', feedback: 'Correct. He saw you, panicked mildly, and later built a website. As one does. 😅' },
+      { text: '🤔 Someone with way too much time and very good taste', feedback: 'The time part is debatable. The taste part — spot on. He did pick you to celebrate, after all. 😌' },
+      { text: '😄 A little unhinged but in a sweet way', feedback: 'Building a birthday site for someone you just met IS slightly unhinged. But here we are. Happy Birthday! 🎂' },
+      { text: '💛 Someone who just genuinely thinks you\'re worth celebrating', feedback: 'That\'s the one. That\'s exactly it. Happy Birthday, Atasi. 🎉' }
+    ]
+  }
+];
+
+let currentQ = 0;
+
+function renderQuestion(){
+  const q = questions[currentQ];
+  document.getElementById('quiz-bg').className = `quiz-bg ${q.bg}`;
+  document.getElementById('question-num').textContent = q.num;
+  document.getElementById('question-text').textContent = q.text;
+  document.getElementById('feedback-box').className = 'feedback-box';
+  document.getElementById('feedback-box').textContent = '';
+  document.getElementById('next-btn').className = 'next-btn';
+
+  // progress dots
+  const prog = document.getElementById('quiz-progress');
+  prog.innerHTML = '';
+  questions.forEach((_,i)=>{
+    const dot = document.createElement('div');
+    dot.className = 'progress-dot' + (i<currentQ?' done':i===currentQ?' active':'');
+    prog.appendChild(dot);
+  });
+
+  const opts = document.getElementById('options');
+  opts.innerHTML = '';
+  q.options.forEach((opt,i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt.text;
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.option-btn').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      const fb = document.getElementById('feedback-box');
+      fb.textContent = opt.feedback;
+      fb.className = 'feedback-box show';
+      document.getElementById('next-btn').className = 'next-btn show';
+    });
+    opts.appendChild(btn);
+  });
+
+  // animate in
+  const qc = document.querySelector('.quiz-container');
+  qc.style.opacity='0'; qc.style.transform='translateY(20px)';
+  requestAnimationFrame(()=>{
+    qc.style.transition='opacity 0.4s ease, transform 0.4s ease';
+    qc.style.opacity='1'; qc.style.transform='translateY(0)';
+  });
+}
+
+document.getElementById('next-btn').addEventListener('click',()=>{
+  currentQ++;
+  if(currentQ < questions.length){
+    renderQuestion();
+  } else {
+    showPage('page-wish');
+    launchWish();
+  }
+});
+
+// ── PAGE SWITCH ──
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id==='page-quiz') renderQuestion();
+}
+
+// ── WISH PAGE ──
+function launchWish(){
+  document.getElementById('balloon-game').style.display = 'flex';
+  spawnBalloons();
+  spawnConfetti();
+  spawnMusicNotes();
+  playHappyBirthday();
+}
+
+// ── HAPPY BIRTHDAY TUNE (Web Audio) ──
+function playHappyBirthday(){
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  if(!AudioCtx) return;
+  const ctx = new AudioCtx();
+
+  const BPM = 132;
+  const beat = 60 / BPM;
+
+  const C4=261.63,D4=293.66,E4=329.63,F4=349.23,G4=392.00,
+        A4=440.00,Bb4=466.16,B4=493.88,
+        C5=523.25,D5=587.33,E5=659.25,F5=698.46,G5=783.99,
+        C3=130.81,F3=174.61,G3=196.00,Bb3=233.08;
+
+  // Melody
+  const melody = [
+    [C4,0.75],[C4,0.25],[D4,1],[C4,1],[F4,1],[E4,2],
+    [C4,0.75],[C4,0.25],[D4,1],[C4,1],[G4,1],[F4,2],
+    [C4,0.75],[C4,0.25],[C5,1],[A4,1],[F4,1],[E4,1],[D4,2],
+    [Bb4,0.75],[Bb4,0.25],[A4,1],[F4,1],[G4,1],[F4,3],
+  ];
+
+  // Harmony a third below
+  const harmony = [
+    [A4,0.75],[A4,0.25],[B4,1],[A4,1],[D4,1],[C5,2],
+    [A4,0.75],[A4,0.25],[B4,1],[A4,1],[B4,1],[A4,2],
+    [A4,0.75],[A4,0.25],[A4,1],[F4,1],[D4,1],[C5,1],[B4,2],
+    [G4,0.75],[G4,0.25],[F4,1],[D4,1],[E4,1],[D4,3],
+  ];
+
+  // Bass line
+  const bass = [
+    [F3,2],[C3,2],
+    [F3,2],[G3,2],
+    [F3,2],[C3,2],[G3,2],
+    [Bb3,2],[F3,4],
+  ];
+
+  const totalBeats = melody.reduce((s,[,d])=>s+d,0);
+  const totalDur   = totalBeats * beat;
+
+  // Master bus with soft limiter
+  const master = ctx.createGain();
+  master.gain.value = 0.72;
+  master.connect(ctx.destination);
+
+  // Shared reverb delay
+  const revDelay = ctx.createDelay(0.4);
+  revDelay.delayTime.value = 0.22;
+  const revFB = ctx.createGain(); revFB.gain.value = 0.28;
+  const revOut = ctx.createGain(); revOut.gain.value = 0.18;
+  revDelay.connect(revFB); revFB.connect(revDelay);
+  revDelay.connect(revOut); revOut.connect(master);
+
+  function note(freq, startT, dBeats, vol, type='triangle', toReverb=true){
+    const d = dBeats * beat;
+    const osc  = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const filt = ctx.createBiquadFilter();
+    filt.type = 'lowpass';
+    filt.frequency.value = type === 'sine' ? 1800 : 3200;
+    osc.type = type;
+    osc.frequency.value = freq;
+    osc.connect(filt); filt.connect(gain); gain.connect(master);
+    if(toReverb) gain.connect(revDelay);
+    gain.gain.setValueAtTime(0, startT);
+    gain.gain.linearRampToValueAtTime(vol, startT + 0.025);
+    gain.gain.setValueAtTime(vol * 0.8, startT + d * 0.6);
+    gain.gain.exponentialRampToValueAtTime(0.0001, startT + d * 0.94);
+    osc.start(startT); osc.stop(startT + d + 0.05);
+  }
+
+  function scheduleTrack(track, vol, type, startT, octaveMult=1){
+    let t = startT;
+    for(const [freq, dur] of track){
+      note(freq * octaveMult, t, dur, vol, type);
+      t += dur * beat;
+    }
+  }
+
+  // Noise burst percussion
+  function kick(t){
+    const buf  = ctx.createBuffer(1, ctx.sampleRate * 0.35, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for(let i=0;i<data.length;i++) data[i]=(Math.random()*2-1)*Math.exp(-i/(ctx.sampleRate*0.045));
+    const src  = ctx.createBufferSource();
+    const gain = ctx.createGain();
+    const filt = ctx.createBiquadFilter();
+    filt.type='lowpass'; filt.frequency.value=130;
+    src.buffer=buf; src.connect(filt); filt.connect(gain); gain.connect(master);
+    gain.gain.setValueAtTime(0.5,t); gain.gain.exponentialRampToValueAtTime(0.001,t+0.28);
+    src.start(t);
+  }
+
+  function hihat(t, vol=0.07){
+    const buf  = ctx.createBuffer(1, ctx.sampleRate*0.05, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for(let i=0;i<data.length;i++) data[i]=(Math.random()*2-1)*Math.exp(-i/(ctx.sampleRate*0.012));
+    const src  = ctx.createBufferSource();
+    const gain = ctx.createGain();
+    const filt = ctx.createBiquadFilter();
+    filt.type='highpass'; filt.frequency.value=7000;
+    src.buffer=buf; src.connect(filt); filt.connect(gain); gain.connect(master);
+    gain.gain.setValueAtTime(vol,t); gain.gain.exponentialRampToValueAtTime(0.001,t+0.04);
+    src.start(t);
+  }
+
+  function schedulePerc(startT){
+    const bars = Math.ceil(totalBeats / 3); // 3/4 time
+    for(let b=0;b<bars;b++){
+      const barT = startT + b * 3 * beat;
+      kick(barT);                     // beat 1
+      hihat(barT);                    // beat 1
+      hihat(barT + beat, 0.05);       // beat 2
+      hihat(barT + beat*2, 0.05);     // beat 3
+    }
+  }
+
+  function playSong(startT){
+    // Lead melody — warm triangle
+    scheduleTrack(melody,  0.30, 'triangle', startT);
+    // Lead doubled an octave up — quiet sine shimmer
+    scheduleTrack(melody,  0.06, 'sine',     startT, 2);
+    // Harmony — sine, softer
+    scheduleTrack(harmony, 0.12, 'sine',     startT);
+    // Bass — round sine
+    scheduleTrack(bass,    0.18, 'sine',     startT);
+    // Percussion
+    schedulePerc(startT);
+  }
+
+  let nextStart = ctx.currentTime + 0.1;
+  playSong(nextStart);
+
+  function loop(){
+    nextStart += totalDur;
+    playSong(nextStart);
+    setTimeout(loop, (totalDur - 0.7) * 1000);
+  }
+  setTimeout(loop, (totalDur - 0.7) * 1000);
+}
+
+const balloonColors = ['#e8647a','#f7c5cc','#d4a853','#a8d8ea','#b8e0d2','#f4a261','#e76f51'];
+const TOTAL_BALLOONS = 25;
+let balloonScore = 0;
+
+const scoreMessages = [
+  [1,  "First one down! 🎈"],
+  [5,  "5 down! She means business 💅"],
+  [10, "Halfway there! Unstoppable teacher energy 🏆"],
+  [15, "15! The kitchen may fear her but balloons fear her more 🔥"],
+  [20, "20! Almost there, finish them! 👀"],
+  [25, "PERFECT SCORE! 🎉 Every. Single. One. Queen behaviour."],
+];
+
+function getScoreMsg(score){
+  let msg = '';
+  for(const [threshold, text] of scoreMessages){
+    if(score >= threshold) msg = text;
+  }
+  return msg;
+}
+
+function spawnBalloons(){
+  const c = document.getElementById('balloons');
+  c.innerHTML = '';
+  document.getElementById('total-display').textContent = `/ ${TOTAL_BALLOONS}`;
+  for(let i = 0; i < TOTAL_BALLOONS; i++){
+    setTimeout(() => spawnOneBalloon(c), i * 400);
+  }
+}
+
+function spawnOneBalloon(container){
+  const color = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+  const size  = Math.random() * 24 + 48;
+  const startX = Math.random() * (window.innerWidth - size);
+  const speed  = Math.random() * 1.2 + 0.8;   // px per frame upward
+  const sway   = Math.random() * 1.5 + 0.5;    // sway amplitude
+  const swaySpeed = Math.random() * 0.03 + 0.01;
+
+  const b = document.createElement('div');
+  b.className = 'balloon';
+  b.style.cssText = `
+    width:${size}px;
+    height:${size * 1.25}px;
+    background:${color};
+    box-shadow: inset -6px -6px 0 rgba(0,0,0,0.12);
+    left:${startX}px;
+    top:${window.innerHeight + 20}px;
+    opacity:0.9;
+  `;
+
+  let posX = startX;
+  let posY = window.innerHeight + 20;
+  let tick = Math.random() * 100;
+  let alive = true;
+
+  function frame(){
+    if(!alive || !b.parentNode) return;
+    tick += swaySpeed;
+    posY -= speed;
+    posX = startX + Math.sin(tick) * sway * 18;
+    b.style.left = posX + 'px';
+    b.style.top  = posY + 'px';
+
+    if(posY < -size - 40){
+      b.remove();
+      if(balloonScore < TOTAL_BALLOONS) spawnOneBalloon(container);
+      return;
+    }
+    requestAnimationFrame(frame);
+  }
+
+  requestAnimationFrame(frame);
+
+  b.addEventListener('click', (e) => {
+    if(!alive) return;
+    alive = false;
+    popBalloon(b, color, e.clientX, e.clientY);
+  });
+  b.addEventListener('touchstart', (e) => {
+    if(!alive) return;
+    e.preventDefault();
+    alive = false;
+    popBalloon(b, color, e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: false });
+
+  container.appendChild(b);
+}
+
+function popBalloon(el, color, x, y){
+  el.remove();
+
+  // particle burst
+  for(let p = 0; p < 10; p++){
+    const piece = document.createElement('div');
+    const angle = (p / 10) * 360;
+    const dist  = Math.random() * 55 + 25;
+    piece.style.cssText = `
+      position:fixed;left:${x}px;top:${y}px;
+      width:9px;height:9px;
+      border-radius:50%;
+      background:${color};
+      pointer-events:none;
+      z-index:9999;
+      animation: popPiece 0.55s ease forwards;
+      --tx:${Math.cos(angle * Math.PI/180) * dist}px;
+      --ty:${Math.sin(angle * Math.PI/180) * dist}px;
+    `;
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 600);
+  }
+
+  // pop sound
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.setValueAtTime(320, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.12);
+    gain.gain.setValueAtTime(0.25, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+    osc.start(); osc.stop(ctx.currentTime + 0.12);
+  } catch(err){}
+
+  balloonScore++;
+  document.getElementById('score-display').textContent = balloonScore;
+  document.getElementById('score-msg').textContent = getScoreMsg(balloonScore);
+
+  // respawn a fresh balloon only if under total
+  if(balloonScore < TOTAL_BALLOONS){
+    setTimeout(() => {
+      const c = document.getElementById('balloons');
+      if(c) spawnOneBalloon(c);
+    }, Math.random() * 2000 + 1000);
+  }
+}
+
+const confettiColors = ['#e8647a','#d4a853','#a8d8ea','#b8e0d2','#f4a261','#c084fc','#f472b6'];
+function spawnConfetti(){
+  const c = document.getElementById('confetti');
+  for(let i=0;i<60;i++){
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    const isRect = Math.random()>0.5;
+    p.style.cssText = `
+      left:${Math.random()*100}%;
+      top:0;
+      background:${confettiColors[Math.floor(Math.random()*confettiColors.length)]};
+      width:${isRect?8:6}px;
+      height:${isRect?4:6}px;
+      border-radius:${isRect?'2px':'50%'};
+      --dur:${Math.random()*3+3}s;
+      --delay:${Math.random()*6}s;
+    `;
+    c.appendChild(p);
+  }
+}
+
+function spawnMusicNotes(){
+  const notes = ['🎵','🎶','♪','♫'];
+  const c = document.querySelector('.wish-content');
+  for(let i=0;i<8;i++){
+    const n = document.createElement('span');
+    n.className = 'music-note';
+    n.textContent = notes[i%notes.length];
+    n.style.cssText = `
+      left:${Math.random()*80+10}%;
+      bottom:${Math.random()*40+5}%;
+      --dur:${Math.random()*2+2}s;
+      --delay:${Math.random()*4}s;
+      --tx:${(Math.random()-0.5)*60}px;
+    `;
+    c.appendChild(n);
+  }
+}
+
+// Cake click
+document.getElementById('cake').addEventListener('click',function(){
+  this.textContent = '🎂';
+  this.style.filter = 'grayscale(0.3)';
+  // tiny burst
+  for(let i=0;i<12;i++){
+    const spark = document.createElement('span');
+    spark.textContent = ['✨','⭐','💫','🌟'][i%4];
+    spark.style.cssText = `
+      position:fixed;
+      left:50%;top:40%;
+      font-size:1rem;
+      pointer-events:none;
+      animation:sparkBurst 0.8s ease forwards;
+      --tx:${(Math.random()-0.5)*120}px;
+      --ty:${(Math.random()-0.5)*120}px;
+    `;
+    document.body.appendChild(spark);
+    setTimeout(()=>spark.remove(),900);
+  }
+});
+
+// spark burst keyframe
+const st = document.createElement('style');
+st.textContent = `
+  @keyframes sparkBurst {
+    0%{opacity:1;transform:translate(-50%,-50%) translate(0,0) scale(1);}
+    100%{opacity:0;transform:translate(-50%,-50%) translate(var(--tx),var(--ty)) scale(0);}
+  }
+  @keyframes popPiece {
+    0%{opacity:1;transform:translate(-50%,-50%) translate(0,0) scale(1);}
+    100%{opacity:0;transform:translate(-50%,-50%) translate(var(--tx),var(--ty)) scale(0);}
+  }
+`;
+document.head.appendChild(st);
+</script>
+</body>
+</html>

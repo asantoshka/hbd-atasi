@@ -10,6 +10,23 @@
       0%{opacity:1;transform:translate(-50%,-50%) translate(0,0) scale(1);}
       100%{opacity:0;transform:translate(-50%,-50%) translate(var(--tx),var(--ty)) scale(0);}
     }
+    @keyframes hbdBounce {
+      0%{transform:scale(0) rotate(-20deg);opacity:0;}
+      60%{transform:scale(1.3) rotate(8deg);}
+      100%{transform:scale(1) rotate(0);opacity:1;}
+    }
+    @keyframes hbdSlideUp {
+      from{opacity:0;transform:translateY(30px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+    @keyframes hbdShimmer {
+      0%{background-position:0% 50%;}
+      100%{background-position:200% 50%;}
+    }
+    @keyframes hbdPulse {
+      0%,100%{text-shadow:0 0 20px rgba(212,168,83,0.6),0 0 40px rgba(232,100,122,0.4);}
+      50%{text-shadow:0 0 40px rgba(212,168,83,1),0 0 80px rgba(232,100,122,0.8);}
+    }
   `;
   document.head.appendChild(st);
 })();
@@ -101,9 +118,7 @@ function spawnOneBalloon(container){
   container.appendChild(b);
 }
 
-function popBalloon(el, color, x, y){
-  el.remove();
-
+function burstParticles(x, y, color){
   for(let p = 0; p < 10; p++){
     const piece = document.createElement('div');
     const angle = (p / 10) * 360;
@@ -122,6 +137,23 @@ function popBalloon(el, color, x, y){
     document.body.appendChild(piece);
     setTimeout(() => piece.remove(), 600);
   }
+}
+
+function burstAllRemaining(){
+  const remaining = Array.from(document.querySelectorAll('#balloons .balloon'));
+  remaining.forEach((b, i) => {
+    setTimeout(() => {
+      if(!b.parentNode) return;
+      const rect = b.getBoundingClientRect();
+      burstParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, b.style.background);
+      b.remove();
+    }, i * 80);
+  });
+}
+
+function popBalloon(el, color, x, y){
+  el.remove();
+  burstParticles(x, y, color);
 
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -144,7 +176,45 @@ function popBalloon(el, color, x, y){
       const c = document.getElementById('balloons');
       if(c) spawnOneBalloon(c);
     }, Math.random() * 2000 + 1000);
+  } else {
+    burstAllRemaining();
+    setTimeout(triggerHBDAnimation, 400);
   }
+}
+
+function triggerHBDAnimation(){
+  const overlay = document.getElementById('hbd-overlay');
+  overlay.style.display = 'flex';
+  requestAnimationFrame(() => overlay.classList.add('show'));
+
+  // Extra confetti burst
+  const c = document.getElementById('confetti');
+  for(let i = 0; i < 80; i++){
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    const isRect = Math.random() > 0.5;
+    p.style.cssText = `
+      left:${Math.random()*100}%;top:0;
+      background:${confettiColors[Math.floor(Math.random()*confettiColors.length)]};
+      width:${isRect?10:7}px;height:${isRect?5:7}px;
+      border-radius:${isRect?'2px':'50%'};
+      --dur:${Math.random()*2+2}s;--delay:${Math.random()*1.5}s;
+    `;
+    c.appendChild(p);
+  }
+
+  // Auto-dismiss after 5s
+  setTimeout(() => {
+    overlay.style.transition = 'opacity 1.2s';
+    overlay.style.opacity = '0';
+    setTimeout(() => { overlay.style.display = 'none'; overlay.style.opacity = ''; overlay.classList.remove('show'); }, 1200);
+  }, 5000);
+
+  overlay.addEventListener('click', () => {
+    overlay.style.transition = 'opacity 0.5s';
+    overlay.style.opacity = '0';
+    setTimeout(() => { overlay.style.display = 'none'; overlay.style.opacity = ''; overlay.classList.remove('show'); }, 500);
+  }, { once: true });
 }
 
 function spawnConfetti(){
