@@ -1,5 +1,5 @@
 // DEV FLAG — set to false before sending to Atasi
-const DEV_SKIP_TIMER = true;
+const DEV_SKIP_TIMER = false;
 
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
