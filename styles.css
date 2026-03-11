@@ -130,13 +130,13 @@ body {
   filter: brightness(0.35) saturate(0.6);
 }
 
-.quiz-bg.q1 { background-image: url('../img/1.webp'); background-position: top center; }
-.quiz-bg.q2 { background-image: url('../img/2.webp'); background-position: top center; }
-.quiz-bg.q3 { background-image: url('../img/3.webp'); background-position: top center; }
-.quiz-bg.q4 { background-image: url('../img/1.webp'); background-position: top center; }
-.quiz-bg.q5 { background-image: url('../img/1.webp'); background-position: top center; }
-.quiz-bg.q6 { background-image: url('../img/2.webp'); background-position: top center; }
-.quiz-bg.q7 { background-image: url('../img/3.webp'); background-position: top center; }
+.quiz-bg.q1 { background-image: url('img/1.webp'); background-position: top center; }
+.quiz-bg.q2 { background-image: url('img/2.webp'); background-position: top center; }
+.quiz-bg.q3 { background-image: url('img/3.webp'); background-position: top center; }
+.quiz-bg.q4 { background-image: url('img/1.webp'); background-position: top center; }
+.quiz-bg.q5 { background-image: url('img/1.webp'); background-position: top center; }
+.quiz-bg.q6 { background-image: url('img/2.webp'); background-position: top center; }
+.quiz-bg.q7 { background-image: url('img/3.webp'); background-position: top center; }
 
 .quiz-bg[class*="q"] {
   filter: blur(10px) brightness(0.38);
