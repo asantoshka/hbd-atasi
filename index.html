@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Atasi 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ══════ PAGE 0: TIMER ══════ -->
+<div class="page" id="page-timer">
+  <div class="timer-bg"></div>
+  <div class="stars" id="stars-timer"></div>
+  <div class="timer-card">
+    <span class="timer-emoji">⏳</span>
+    <h1>Something special is<br><span>almost here...</span></h1>
+    <p class="timer-tagline">Atasi's big day is loading. Please hold. 🎂</p>
+    <div class="countdown-grid">
+      <div class="countdown-unit"><span class="countdown-num" id="cd-days">00</span><span class="countdown-label">Days</span></div>
+      <div class="countdown-unit"><span class="countdown-num" id="cd-hours">00</span><span class="countdown-label">Hours</span></div>
+      <div class="countdown-unit"><span class="countdown-num" id="cd-mins">00</span><span class="countdown-label">Minutes</span></div>
+      <div class="countdown-unit"><span class="countdown-num" id="cd-secs">00</span><span class="countdown-label">Seconds</span></div>
+    </div>
+    <p class="fun-messages" id="fun-msg">She's still peacefully unaware this exists. 🤫</p>
+    <p class="timer-note">Come back on 13th March at midnight 🌙</p>
+    <button onclick="showPage('page-lock')" style="margin-top:1.5rem;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.35);font-size:0.75rem;padding:0.4rem 1.2rem;border-radius:50px;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:0.08em;" id="skip-btn">skip (dev only)</button>
+  </div>
+</div>
+
+<!-- ══════ PAGE 1: LOCK ══════ -->
+<div class="page active" id="page-lock">
+  <div class="lock-bg"></div>
+  <div class="stars" id="stars"></div>
+
+  <div class="lock-card" id="lock-card">
+    <span class="lock-icon">🔒</span>
+    <h1>Something awaits...</h1>
+    <p>you should know this one 😏</p>
+
+    <div class="pin-input" id="pin-input">
+      <input type="number" maxlength="1" min="0" max="9" id="p0" placeholder="·">
+      <input type="number" maxlength="1" min="0" max="9" id="p1" placeholder="·">
+      <input type="number" maxlength="1" min="0" max="9" id="p2" placeholder="·">
+      <input type="number" maxlength="1" min="0" max="9" id="p3" placeholder="·">
+    </div>
+
+    <p class="hint">🗓️ hint: the day someone special arrived</p>
+    <p class="error-msg" id="error-msg"></p>
+  </div>
+</div>
+
+<!-- ══════ PAGE 2: QUIZ ══════ -->
+<div class="page" id="page-quiz">
+  <div class="quiz-bg q1" id="quiz-bg"></div>
+  <div class="quiz-container">
+    <div class="quiz-progress" id="quiz-progress"></div>
+    <div class="question-num" id="question-num">Question 1 of 4</div>
+    <div class="question-text" id="question-text"></div>
+    <div class="options" id="options"></div>
+    <div class="feedback-box" id="feedback-box"></div>
+    <button class="next-btn" id="next-btn">Next →</button>
+  </div>
+</div>
+
+<!-- ══════ PAGE 3: WISH ══════ -->
+<div class="page" id="page-wish">
+  <div class="wish-bg"></div>
+  <div class="balloons" id="balloons"></div>
+  <div class="confetti-container" id="confetti"></div>
+
+  <!-- Score bar fixed at top -->
+  <div id="balloon-game" style="
+    position:fixed;top:0;left:0;right:0;
+    z-index:100;
+    display:none;
+    flex-direction:column;align-items:center;
+    padding:0.6rem 1rem 0.5rem;
+    background:rgba(15,5,25,0.75);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(255,255,255,0.07);
+  ">
+    <div style="display:flex;align-items:center;gap:0.8rem;">
+      <span style="font-size:0.75rem;color:rgba(255,255,255,0.35);letter-spacing:0.12em;text-transform:uppercase;">🎈 popped</span>
+      <span id="score-display" style="font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--gold);line-height:1;">0</span>
+      <span id="total-display" style="font-size:0.75rem;color:rgba(255,255,255,0.25);">/ 18</span>
+    </div>
+    <div id="score-msg" style="color:rgba(255,255,255,0.45);font-size:0.78rem;font-style:italic;min-height:1.2em;margin-top:0.15rem;"></div>
+  </div>
+
+  <div class="wish-content">
+    <span class="cake-wrap" id="cake" title="Click to blow!">🎂</span>
+    <h1>Happy Birthday,<br><span>Atasi!</span></h1>
+    <p class="wish-subtitle">13th March · A wonderful human</p>
+    <p class="wish-message">
+      May this year bring you more joy than a quiet classroom on a Friday,<br>
+      and absolutely zero kitchen injuries. 🔥<br><br>
+      You're cute, you're pretty, and you deserve every good thing<br>
+      this world has to offer — and then some.<br><br>
+      Some people just have this thing about them —<br>
+      the kind you notice without meaning to.<br>
+      Here's to you, Atasi — genuinely one of a kind.<br>
+      The world's a little more interesting with you in it. 🥂
+    </p>
+    <div class="birthday-tag">🎉 wishing you the best year yet</div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/wish.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/lock.js"></script>
+<script src="js/timer.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
