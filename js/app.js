@@ -1,5 +1,5 @@
 // DEV FLAG — set to false before sending to Atasi
-const DEV_SKIP_TIMER = false;
+const DEV_SKIP_TIMER = true;
 
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -21,6 +21,18 @@ function showPage(id){
       --op:${Math.random()*0.7+0.3};
       animation-delay:${Math.random()*5}s;
     `;
+    c.appendChild(s);
+  }
+})();
+
+// Spawn welcome page stars
+(function(){
+  const c = document.getElementById('stars-welcome');
+  for(let i=0;i<120;i++){
+    const s = document.createElement('div');
+    s.className = 'star';
+    const sz = Math.random()*2.5+0.5;
+    s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${Math.random()*4+2}s;--op:${Math.random()*0.7+0.3};animation-delay:${Math.random()*5}s;`;
     c.appendChild(s);
   }
 })();

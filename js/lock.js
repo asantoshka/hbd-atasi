@@ -23,7 +23,7 @@ function checkPin(){
     const card = document.getElementById('lock-card');
     card.style.transform='scale(0.95)';
     card.style.opacity='0.6';
-    setTimeout(()=>showPage('page-quiz'), 600);
+    setTimeout(()=>showPage('page-welcome'), 600);
   } else {
     const card = document.getElementById('lock-card');
     card.classList.add('shake');
