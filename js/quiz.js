@@ -1,4 +1,5 @@
 let currentQ = 0;
+const quizAnswers = [];
 
 function renderQuestion(){
   const q = questions[currentQ];
@@ -27,6 +28,7 @@ function renderQuestion(){
     btn.addEventListener('click',()=>{
       document.querySelectorAll('.option-btn').forEach(b=>b.classList.remove('selected'));
       btn.classList.add('selected');
+      quizAnswers[currentQ] = { answer: opt.text, feedback: opt.feedback };
       const fb = document.getElementById('feedback-box');
       fb.textContent = opt.feedback;
       fb.className = 'feedback-box show';
@@ -49,6 +51,14 @@ document.getElementById('next-btn').addEventListener('click',()=>{
   if(currentQ < questions.length){
     renderQuestion();
   } else {
+    const body = {};
+    questions.forEach((q, i) => {
+      const a = quizAnswers[i];
+      body[`Q${i + 1}_question`] = q.text;
+      body[`Q${i + 1}_answer`]   = a ? a.answer   : '(skipped)';
+      body[`Q${i + 1}_comment`]  = a ? a.feedback : '(skipped)';
+    });
+    notify(body);
     showPage('page-wish');
     launchWish();
   }

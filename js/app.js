@@ -1,5 +1,42 @@
-// DEV FLAG — set to false before sending to Atasi
-const DEV_SKIP_TIMER = false;
+const _startTime = Date.now();
+
+function getDevice() {
+  const ua = navigator.userAgent;
+  const mobile = /Mobi|Android/i.test(ua);
+  const os = /iPhone|iPad/.test(ua) ? 'iOS'
+    : /Android/.test(ua) ? 'Android'
+    : /Windows/.test(ua) ? 'Windows'
+    : /Mac/.test(ua) ? 'macOS'
+    : /Linux/.test(ua) ? 'Linux' : 'unknown';
+  const browser = /Edg\//.test(ua) ? 'Edge'
+    : /OPR\/|Opera/.test(ua) ? 'Opera'
+    : /Chrome\//.test(ua) ? 'Chrome'
+    : /Safari\//.test(ua) ? 'Safari'
+    : /Firefox\//.test(ua) ? 'Firefox' : 'unknown';
+  return { device: mobile ? 'Mobile' : 'Desktop', os, browser };
+}
+
+function notify(payload) {
+  fetch('https://ipapi.co/json/')
+    .then(r => r.json())
+    .catch(() => ({}))
+    .then(geo => {
+      fetch('https://formspree.io/f/xjgaoavy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          ...payload,
+          ip: geo.ip || 'unknown',
+          city: geo.city || 'unknown',
+          region: geo.region || 'unknown',
+          country: geo.country_name || 'unknown',
+          ...getDevice(),
+          time_spent: Math.round((Date.now() - _startTime) / 1000) + 's',
+          time: new Date().toLocaleString()
+        })
+      }).catch(() => {});
+    });
+}
 
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -37,14 +74,3 @@ function showPage(id){
   }
 })();
 
-// Birthday check — show timer if not yet 13th March midnight
-(function(){
-  const now = new Date();
-  const isBirthday = now.getMonth() === 2 && now.getDate() === 13;
-  if (!isBirthday && !DEV_SKIP_TIMER) {
-    document.getElementById('page-timer').classList.add('active');
-    document.getElementById('page-lock').classList.remove('active');
-    startTimer();
-    spawnTimerStars();
-  }
-})();
